@@ -1,10 +1,17 @@
 const express = require("express");
 const data = require("./data.js");
 const app = express();
-// const bodyParser = require('body-parser');
-const port = process.env.PORT || 3000;
+const bodyParser = require('body-parser');
+const mongoose = require("mongoose");
+const port = process.env.PORT || 4000;
 
-// app.use(bodyParser.json());
+const newwordRoutes = require('./routes/newwords');
+
+
+app.use(bodyParser.json());
+app.use('/newwords', newwordRoutes);
+
+mongoose.connect("mongodb+srv://carlkakisis:" + process.env.MONGO_ATLAS_PW + "@spellchecker-mghur.mongodb.net/test?retryWrites=true", { useNewUrlParser: true })
 
 app.use(express.static('public'));
 
@@ -31,3 +38,4 @@ app.get("/data", function(req, res) {
     
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
+module.exports = app;
